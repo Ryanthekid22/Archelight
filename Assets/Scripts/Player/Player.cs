@@ -18,12 +18,13 @@ public class Player : MonoBehaviour {
 	
 	public float hungerSpeedMultiplier = 0.10f;
 	public float thirstSpeedMultiplier = 0.25f;
-	
+	public bool isDead;
 	private Blur blur;
 	
 	
 	private void Start()
 	{
+		isDead = false;
 		blur = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Blur>();
 		deathCanvas.SetActive(false);
 	}
@@ -68,6 +69,7 @@ public class Player : MonoBehaviour {
 	
 	private void Die()
 	{
+		isDead = true;
 		Time.timeScale = 0.0f;
 		deathCanvas.SetActive(true);
 		blur.enabled = true;
@@ -75,6 +77,7 @@ public class Player : MonoBehaviour {
 	
 	public void Respawn()
 	{
+		isDead = false;
 		Time.timeScale = 1.0f;
 		deathCanvas.SetActive(false);
 		transform.position = spawnPoint;

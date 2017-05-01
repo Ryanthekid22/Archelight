@@ -27,13 +27,12 @@ public class PauseManager : MonoBehaviour {
 		}
 		if(isPaused == true)
 		{
-			Time.timeScale = 0.0f;
+
 			pauseCanvas.SetActive(true);
 			blur.enabled = true;
 		}
 		else if(isPaused == false)
 		{
-			Time.timeScale = 1.0f;
 			pauseCanvas.SetActive(false);
 			blur.enabled = false;
 		}

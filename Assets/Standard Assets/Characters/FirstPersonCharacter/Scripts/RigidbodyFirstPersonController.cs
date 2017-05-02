@@ -11,10 +11,10 @@ namespace UnityStandardAssets.Characters.FirstPerson
         [Serializable]
         public class MovementSettings
         {
-            public float ForwardSpeed = 2.5f;   // Speed when walking forward
-            public float BackwardSpeed = 1.0f;  // Speed when walking backwards
-            public float StrafeSpeed = 1.0f;    // Speed when walking sideways
-            public float RunMultiplier = 1.5f;   // Speed when sprinting
+            public float ForwardSpeed = 8.0f;   // Speed when walking forward
+            public float BackwardSpeed = 4.0f;  // Speed when walking backwards
+            public float StrafeSpeed = 4.0f;    // Speed when walking sideways
+            public float RunMultiplier = 2.0f;   // Speed when sprinting
 	        public KeyCode RunKey = KeyCode.LeftShift;
             public float JumpForce = 30f;
             public AnimationCurve SlopeCurveModifier = new AnimationCurve(new Keyframe(-90.0f, 1.0f), new Keyframe(0.0f, 1.0f), new Keyframe(90.0f, 0.0f));
@@ -199,7 +199,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             RaycastHit hitInfo;
             if (Physics.SphereCast(transform.position, m_Capsule.radius * (1.0f - advancedSettings.shellOffset), Vector3.down, out hitInfo,
                                    ((m_Capsule.height/2f) - m_Capsule.radius) +
-                                   advancedSettings.stickToGroundHelperDistance, ~0, QueryTriggerInteraction.Ignore))
+                                   advancedSettings.stickToGroundHelperDistance, Physics.AllLayers, QueryTriggerInteraction.Ignore))
             {
                 if (Mathf.Abs(Vector3.Angle(hitInfo.normal, Vector3.up)) < 85f)
                 {
@@ -246,7 +246,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_PreviouslyGrounded = m_IsGrounded;
             RaycastHit hitInfo;
             if (Physics.SphereCast(transform.position, m_Capsule.radius * (1.0f - advancedSettings.shellOffset), Vector3.down, out hitInfo,
-                                   ((m_Capsule.height/2f) - m_Capsule.radius) + advancedSettings.groundCheckDistance, ~0, QueryTriggerInteraction.Ignore))
+                                   ((m_Capsule.height/2f) - m_Capsule.radius) + advancedSettings.groundCheckDistance, Physics.AllLayers, QueryTriggerInteraction.Ignore))
             {
                 m_IsGrounded = true;
                 m_GroundContactNormal = hitInfo.normal;

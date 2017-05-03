@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityStandardAssets.ImageEffects;
+using UnityEngine.UI;
 
 public class ShootingSystem : MonoBehaviour {
 
@@ -9,6 +10,13 @@ public class ShootingSystem : MonoBehaviour {
 
 	public int minDamage = 15;
 	public int maxDamage = 30;
+
+	public int clip = 7;
+	public int reserveAmmo= 28;
+	public bool clipEmpty;
+	public int maxClipSize = 7;
+	public Text ammoText;
+
 
 	private PauseManager pauseManager;
 	private Player player;
@@ -50,12 +58,14 @@ public class ShootingSystem : MonoBehaviour {
 		Ray ray = FPSCamera.ScreenPointToRay(new Vector2(Screen.width / 2, Screen.height / 2));
 		RaycastHit hitInfo;
 		Debug.DrawRay(ray.origin, ray.direction * weaponRange, Color.green);
+		ammoText.text = ("Ammo: " + clip + "/" + reserveAmmo);
 
-		if (Input.GetKeyDown(KeyCode.Mouse0))
+		if (Input.GetKeyDown(KeyCode.Mouse0) && clipEmpty == false)
 		{	
 			if(pauseManager.isPaused == false && player.isDead == false)
 			{
 				audSource.PlayOneShot(gunShotClip);
+				clip -= 1;
 
 			Vector3 weaponObjectLocalPosition = weaponObject.transform.localPosition;
 			weaponObjectLocalPosition.z = weaponObjectLocalPosition.z - recoilAmount;
@@ -72,6 +82,36 @@ public class ShootingSystem : MonoBehaviour {
 			}
 			
 		}
+
+		if(Input.GetKeyDown(KeyCode.R) && clip != maxClipSize && reserveAmmo != 0)
+		{
+			if(pauseManager.isPaused == false && player.isDead == false)
+			{
+				int totalAmmo = clip + reserveAmmo;
+
+			if (totalAmmo <= maxClipSize)
+			{
+				clip = totalAmmo;
+				reserveAmmo = 0;
+			}
+			else
+			{
+				int shots = maxClipSize - clip;
+				clip = 7;
+				reserveAmmo -= shots;
+			}
+			}
+		}
+
+		if(clip <= 0)
+		{
+			clipEmpty = true;
+		}
+		else 
+		{
+			clipEmpty = false;
+		}
+
 
 		if(Input.GetKey(KeyCode.Mouse1))
 		{
